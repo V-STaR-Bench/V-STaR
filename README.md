@@ -1,11 +1,10 @@
 ![vbench_logo](https://raw.githubusercontent.com/Vchitect/VBench/master/asset/vbench_logo_github_20240605.jpg)
 
 <!-- [![arXiv](https://img.shields.io/badge/arXiv-2311.99999-b31b1b.svg)](https://arxiv.org/abs/2311.99999) -->
-[![VBench Paper (CVPR 2024)](https://img.shields.io/badge/VBench-CVPR%202024-b31b1b?logo=arxiv&logoColor=red)](https://arxiv.org/abs/2311.17982)
+[![V-STaR Paper](https://img.shields.io/badge/ArXiV%202025-b31b1b?logo=arxiv&logoColor=red)](https://arxiv.org/abs/2311.17982)
 [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Leaderboard-blue)](https://huggingface.co/spaces/V-STaR-Bench/V-STaR-LeaderBoard)
-[![Arena (View Generated Videos Here!)](https://img.shields.io/badge/%F0%9F%A4%97%20VBench%20Arena-blue)](https://huggingface.co/spaces/Vchitect/VBench_Video_Arena)
-[![Project Page](https://img.shields.io/badge/VBench-Website-green?logo=googlechrome&logoColor=green)](https://v-star-bench.github.io/)
-[![Dataset Download](https://img.shields.io/badge/Dataset-Download-red?logo=googlechrome&logoColor=red)](https://drive.google.com/drive/folders/1on66fnZ8atRoLDimcAXMxSwRxqN8_0yS?usp=sharing)
+[![Dataset Download](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset%20Download-blue)](https://huggingface.co/spaces/Vchitect/VBench_Video_Arena)
+[![Project Page](https://img.shields.io/badge/VSTaR-Website-green?logo=googlechrome&logoColor=green)](https://v-star-bench.github.io/)
 [![Visitor](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FV-STaR-Bench%2FV-STaR&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
 
