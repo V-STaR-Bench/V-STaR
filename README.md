@@ -10,7 +10,14 @@
 
 This repository contains the implementation of the following paper and its related serial works in progress. We evaluate Video LLMs models!
 > **V-STaR: Benchmarking Video-LLMs on Video Spatio-Temporal Reasoning**<br>
-> [Ziqi Huang](https://ziqihuangg.github.io/)<sup>∗</sup>, [Yinan He](https://github.com/yinanhe)<sup>∗</sup>, [Jiashuo Yu](https://scholar.google.com/citations?user=iH0Aq0YAAAAJ&hl=zh-CN)<sup>∗</sup>, [Fan Zhang](https://github.com/zhangfan-p)<sup>∗</sup>, [Chenyang Si](https://chenyangsi.top/), [Yuming Jiang](https://yumingj.github.io/), [Yuanhan Zhang](https://zhangyuanhan-ai.github.io/),  [Tianxing Wu](https://tianxingwu.github.io/), [Qingyang Jin](https://github.com/Vchitect/VBench), [Nattapol Chanpaisit](https://nattapolchan.github.io/me), [Yaohui Wang](https://wyhsirius.github.io/), [Xinyuan Chen](https://scholar.google.com/citations?user=3fWSC8YAAAAJ), [Limin Wang](https://wanglimin.github.io), [Dahua Lin](http://dahua.site/)<sup>+</sup>, [Yu Qiao](http://mmlab.siat.ac.cn/yuqiao/index.html)<sup>+</sup>, [Ziwei Liu](https://liuziwei7.github.io/)<sup>+</sup><br>
+> <p align="center">
+    <a href="https://lwpyh.github.io/">Jian Hu</a>,&nbsp;&nbsp;
+    <a href="https://zxccade.github.io/">Zixu Cheng</a>,&nbsp;&nbsp;
+    <a href="https://chenyangsi.top/">Chenyang Si</a>,&nbsp;&nbsp;
+    <a href="https://weivision.github.io/">Wei Li</a>,&nbsp;&nbsp;
+    <a href="http://www.eecs.qmul.ac.uk/~sgg/">Shaogang Gong</a>
+</p>
+
 
 
 ### Table of Contents
