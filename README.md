@@ -1,4 +1,4 @@
-![vbench_logo](https://raw.githubusercontent.com/Vchitect/VBench/master/asset/vbench_logo_github_20240605.jpg)
+![v_star_logo](https://raw.githubusercontent.com/V-STaR-Bench/V-STaR/main/v_star_logo.png)
 
 <!-- [![arXiv](https://img.shields.io/badge/arXiv-2311.99999-b31b1b.svg)](https://arxiv.org/abs/2311.99999) -->
 [![V-STaR Paper](https://img.shields.io/badge/ArXiV%202025-b31b1b?logo=arxiv&logoColor=red)](https://arxiv.org/abs/2311.17982)
@@ -9,10 +9,10 @@
 
 
 This repository contains the implementation of the following paper and its related serial works in progress. We evaluate Video LLMs models!
-> **V-STaR: Benchmarking Video-LLMs on Video Spatio-Temporal Reasoning**<br>
-> <p align="center">
-    <a href="https://lwpyh.github.io/">Jian Hu</a>,&nbsp;&nbsp;
+> **V-STaR: Benchmarking Video-LLMs on Video Spatio-Temporal Reasoning**<br><p align="center">
     <a href="https://zxccade.github.io/">Zixu Cheng</a>,&nbsp;&nbsp;
+    <a href="https://lwpyh.github.io/">Jian Hu</a>,&nbsp;&nbsp;
+    <a href="https://sites.google.com/view/ziquanliu">Ziquan Liu</a>,&nbsp;&nbsp;
     <a href="https://chenyangsi.top/">Chenyang Si</a>,&nbsp;&nbsp;
     <a href="https://weivision.github.io/">Wei Li</a>,&nbsp;&nbsp;
     <a href="http://www.eecs.qmul.ac.uk/~sgg/">Shaogang Gong</a>
