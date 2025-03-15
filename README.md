@@ -17,18 +17,9 @@ This repository contains the implementation of the following paper and its relat
 - [Updates](#updates)
 - [Overview](#overview)
 - [Evaluation Results](#evaluation_results)
-- [Video Generation Models Info](https://github.com/Vchitect/VBench/tree/master/sampled_videos#what-are-the-details-of-the-video-generation-models)
-- [Installation](#installation)
 - [Usage](#usage)
-- [Prompt Suite](#prompt_suite)
-- [Sampled Videos](#sampled_videos)
-- [Evaluation Method Suite](#evaluation_method_suite)
 - [Citation and Acknowledgement](#citation_and_acknowledgement)
 
-<a name="updates"></a>
-## :fire: Updates
-- [03/2025] **PyPI Updates: v0.1.5** preprocessing bug fixes, torch>=2.0 support.
-  
 <a name="overview"></a>
 ## :mega: Overview
 ![overall_structure](./asset/fig_extention_teaser.jpg)
@@ -37,12 +28,12 @@ We propose **VBench**, a comprehensive benchmark suite for video generative mode
 <a name="evaluation_results"></a>
 ## :mortar_board: Evaluation Results
 
-***See our leaderboard for the most updated ranking and numerical results (with models like Gen-3, Kling, Pika)***. [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Leaderboard-blue)](https://huggingface.co/spaces/Vchitect/VBench_Leaderboard)
+***See our leaderboard for the most updated ranking and numerical results (with models like GPT-4o, Gemini-2-flash and Qwen2.5-VL)***. [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Leaderboard-blue)](https://huggingface.co/spaces/Vchitect/VBench_Leaderboard)
 
 <p align="center">
   <img src="./asset/all-dim.jpg" width="65%"/>
 </p>
-We visualize the evaluation results of the 12 most recent top-performing long video generation models across 16 VBench dimensions.
+We visualize the evaluation results of the 6 most recent top-performing Video-LLMs across 9 V-STaR domains.
 
 <p align="center">
   <img src="./asset/radar-open-new.jpg" width="48%" style="margin-right: 4%;" />
@@ -53,282 +44,49 @@ Additionally, we present radar charts separately for the evaluation results of o
 
 #### :trophy: Leaderboard
 
-See numeric values at our [Leaderboard](https://huggingface.co/spaces/Vchitect/VBench_Leaderboard) :1st_place_medal::2nd_place_medal::3rd_place_medal:
+See numeric values at our [Leaderboard](https://huggingface.co/spaces/V-STaR-Bench/V-STaR-LeaderBoard) :1st_place_medal::2nd_place_medal::3rd_place_medal:
 
 **How to join VBench Leaderboard?**
-See the 3 options below:
-| Sampling Party | Evaluation Party |              Comments                         |
-| :---: |  :---: |        :--------------    | 
-| VBench Team | VBench Team | We periodically allocate resources to sample newly released models and perform evaluations. You can request us to perform sampling and evaluation, but the progress depends on our available resources. |
-| Your Team | VBench Team | For non-open-source models interested in joining our leaderboard, submit your video samples to us for evaluation. If you prefer to provide the evaluation results directly, see the row below. |
-| Your Team | Your Team | If you have already used VBench for full evaluation in your report/paper, submit your `eval_results.zip` files to the [VBench Leaderboard](https://huggingface.co/spaces/Vchitect/VBench_Leaderboard) using the `Submit here!` form. The evaluation results will be automatically updated to the leaderboard. Also, share your model information for our records for any columns [here](https://github.com/Vchitect/VBench/tree/master/sampled_videos#what-are-the-details-of-the-video-generation-models).  |
 
-
-#### :film_projector: Model Info
-See [model info](https://github.com/Vchitect/VBench/tree/master/sampled_videos#what-are-the-details-of-the-video-generation-models) for video generation models we used for evaluation.
+please contact us via email to update your results.
 
 #### Evaluation Criterion
 
-- For videos with a duration `>= 5.0s`, we use [**VBench-Long**](https://github.com/Vchitect/VBench/tree/master/vbench2_beta_long) for evaluation.  
-- For videos with a duration `< 5.0s`, we use [**VBench**](https://github.com/Vchitect/VBench?tab=readme-ov-file#usage) for evaluation.
+To evaluate the open-ended *"what"* question, we use Qwen2.5-72B-Instruct to score answers from 0 to 4, denoting entirely incorrect, largely incorrect, largely correct, and entirely correct. Answers scoring above 2 are considered correct, allowing us to compute accuracy. 
 
-<!-- The values have been normalized for better readability of the chart. The normalization process involves scaling each set of performance values to a common scale between 0.3 and 0.8. The formula used for normalization is: (value - min value) / (max value - min value). -->
+For the *"when"* question, we follow the commonly used temporal grounding metrics, <R@n, tIoU=m>, which refers to the percentage of top-n prediction with temporal IoU score larger than m, and mean temporal IoU score (m\_tIoU). 
 
-<a name="installation"></a>
-## :hammer: Installation
-### Install with pip 
-```
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118 # or any other PyTorch version with CUDA<=12.1
-pip install vbench
-```
-
-To evaluate some video generation ability aspects, you need to install [detectron2](https://github.com/facebookresearch/detectron2) via:
-   ```
-   pip install detectron2@git+https://github.com/facebookresearch/detectron2.git
-   ```
-    
-If there is an error during [detectron2](https://github.com/facebookresearch/detectron2) installation, see [here](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). Detectron2 is working only with CUDA 12.1 or 11.X.
-
-Download [VBench_full_info.json](https://github.com/Vchitect/VBench/blob/master/vbench/VBench_full_info.json) to your running directory to read the benchmark prompt suites.
-
-### Install with git clone
-    git clone https://github.com/Vchitect/VBench.git
-    pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118 # or other version with CUDA<=12.1
-    pip install VBench
-    
-If there is an error during [detectron2](https://github.com/facebookresearch/detectron2) installation, see [here](https://detectron2.readthedocs.io/en/latest/tutorials/install.html).
+For the *"where"* question, we use the Average Precision score (AP@vIoU=m) and mean visual Intersection over the Union (m\_vIoU) of every annotated frame. We follow the proposed LGM and AM to measure a model's spatial-temporal reasoning ability. A higher LGM indicates a better overall spatio-temporal reasoning ability of the model, and a higher AM indicates a more average performance of the model on the three metrics.
 
 <a name="usage"></a>
 ## Usage
-Use VBench to evaluate videos, and video generative models.
-- A Side Note: VBench is designed for evaluating different models on a standard benchmark. Therefore, by default, we enforce evaluation on the **standard VBench prompt lists** to ensure **fair comparisons** among different video generation models. That's also why we give warnings when a required video is not found. This is done via defining the set of prompts in [VBench_full_info.json](https://github.com/Vchitect/VBench/blob/master/vbench/VBench_full_info.json). However, we understand that many users would like to use VBench to evaluate their own videos, or videos generated from prompts that does not belong to the VBench Prompt Suite, so we also added the function of **Evaluating Your Own Videos**. Simply set `mode=custom_input`, and you can evaluate your own videos.
+Use V-STaR to evaluate Video-LLMs:
 
+We provide our inference_demo.py script to test Qwen2.5-VL-7B with:
 
-### **[New]** Evaluate Your Own Videos
-We support evaluating any video. Simply provide the path to the video file, or the path to the folder that contains your videos. There is no requirement on the videos' names.
-- Note: We support customized videos / prompts for the following dimensions: `'subject_consistency', 'background_consistency', 'motion_smoothness', 'dynamic_degree', 'aesthetic_quality', 'imaging_quality'`
+```
+python inference_demo.py 
+```
+You can try your Video-LLMs to infer on V-STaR based on the provided scripts to test the model's spatio-temporal reasoning ability.
 
+To evaluate the results, update your result file path in the eval.py script and run:
 
-To evaluate videos with customized input prompt, run our script with `--mode=custom_input`:
 ```
-python evaluate.py \
-    --dimension $DIMENSION \
-    --videos_path /path/to/folder_or_video/ \
-    --mode=custom_input
+python eval.py
 ```
-alternatively you can use our command:
-```
-vbench evaluate \
-    --dimension $DIMENSION \
-    --videos_path /path/to/folder_or_video/ \
-    --mode=custom_input
-```
+Noted: You need at least 2 NVIDIA A100 80G GPUs to run Qwen-2.5-72B for evaluation.
 
-To evaluate using multiple gpus, we can use the following commands:
-```
-torchrun --nproc_per_node=${GPUS} --standalone evaluate.py ...args...
-```
-or 
-```
-vbench evaluate --ngpus=${GPUS} ...args...
-```
-
-### Evaluation on the Standard Prompt Suite of VBench
-
-##### Command Line 
-```bash
-vbench evaluate --videos_path $VIDEO_PATH --dimension $DIMENSION
-```
-For example:
-```bash
-vbench evaluate --videos_path "sampled_videos/lavie/human_action" --dimension "human_action"
-```
-##### Python
-```python
-from vbench import VBench
-my_VBench = VBench(device, <path/to/VBench_full_info.json>, <path/to/save/dir>)
-my_VBench.evaluate(
-    videos_path = <video_path>,
-    name = <name>,
-    dimension_list = [<dimension>, <dimension>, ...],
-)
-```
-For example: 
-```python
-from vbench import VBench
-my_VBench = VBench(device, "vbench/VBench_full_info.json", "evaluation_results")
-my_VBench.evaluate(
-    videos_path = "sampled_videos/lavie/human_action",
-    name = "lavie_human_action",
-    dimension_list = ["human_action"],
-)
-```
-
-### Evaluation of Different Content Categories
-
-##### command line 
-```bash
-vbench evaluate \
-    --videos_path $VIDEO_PATH \
-    --dimension $DIMENSION \
-    --mode=vbench_category \
-    --category=$CATEGORY
-```
-or 
-```
-python evaluate.py \
-    --dimension $DIMENSION \
-    --videos_path /path/to/folder_or_video/ \
-    --mode=vbench_category
-```
-
-### Example of Evaluating VideoCrafter-1.0
-We have provided scripts to download VideoCrafter-1.0 samples, and the corresponding evaluation scripts.
-```
-# download sampled videos
-sh scripts/download_videocrafter1.sh
-
-# evaluate VideoCrafter-1.0
-sh scripts/evaluate_videocrafter1.sh
-```
 ### Submit to Leaderboard
-We have provided scripts for calculating the `Total Score`, `Quality Score`, and `Semantic Score` in the Leaderboard. You can run them locally to obtain the aggregate scores or as a final check before submitting to the Leaderboard.
 
-```bash
-# Pack the evaluation results into a zip file.
-cd evaluation_results
-zip -r ../evaluation_results.zip .
-
-# [Optional] get the total score of your submission file.
-python scripts/cal_final_score.py --zip_file {path_to_evaluation_results.zip} --model_name {your_model_name}
-```
-
-You can submit the json file to [HuggingFace](https://huggingface.co/spaces/Vchitect/VBench_Leaderboard)
-
-### How to Calculate Total Score
-
-To calculate the **Total Score**, we follow these steps:
-
-1. **Normalization**:  
-   Each dimension's results are normalized using the following formula:
-
-    ```bash
-    Normalized Score = (dim_score - min_val) / (max_val - min_val)
-    ```
-
-2. **Quality Score**:  
-   The `Quality Score` is a weighted average of the following dimensions:  
-   **subject consistency**, **background consistency**, **temporal flickering**, **motion smoothness**, **aesthetic quality**, **imaging quality**, and **dynamic degree**.
-
-3. **Semantic Score**:  
-   The `Semantic Score` is a weighted average of the following dimensions:  
-   **object class**, **multiple objects**, **human action**, **color**, **spatial relationship**, **scene**, **appearance style**, **temporal style**, and **overall consistency**.
-
-
-4. **Weighted Average Calculation**:  
-   The **Total Score** is a weighted average of the `Quality Score` and `Semantic Score`:
-    ```bash
-    Total Score = w1 * Quality Score + w2 * Semantic Score
-    ```
-
-   
-The minimum and maximum values used for normalization in each dimension, as well as the weighting coefficients for the average calculation, can be found in the `scripts/constant.py` file.
-
-### Total Score for VBench-I2V
-For Total Score Calculation for VBench-I2V, you can refer to [link](https://github.com/Vchitect/VBench/tree/master/vbench2_beta_i2v#submit-to-leaderboard).
-
-<a name="pretrained_models"></a>
-## :gem: Pre-Trained Models
-[Optional] Please download the pre-trained weights according to the guidance in the `model_path.txt` file for each model in the `pretrained` folder to `~/.cache/vbench`.
-
-<a name="prompt_suite"></a>
-## :bookmark_tabs: Prompt Suite
-
-We provide prompt lists are at `prompts/`. 
-
-Check out [details of prompt suites](https://github.com/Vchitect/VBench/tree/master/prompts), and instructions for [**how to sample videos for evaluation**](https://github.com/Vchitect/VBench/tree/master/prompts).
-
-<a name="sampled_videos"></a>
-## :bookmark_tabs: Sampled Videos
-
-[![Dataset Download](https://img.shields.io/badge/Dataset-Download-red?logo=googlechrome&logoColor=red)](https://drive.google.com/drive/folders/13pH95aUN-hVgybUZJBx1e_08R6xhZs5X)
-
-To facilitate future research and to ensure full transparency, we release all the videos we sampled and used for VBench evaluation. You can download them on [Google Drive](https://drive.google.com/drive/folders/13pH95aUN-hVgybUZJBx1e_08R6xhZs5X).
-
-See detailed explanations of the sampled videos [here](https://github.com/Vchitect/VBench/tree/master/sampled_videos).
-
-We also provide detailed setting for the models under evaluation [here](https://github.com/Vchitect/VBench/tree/master/sampled_videos#what-are-the-details-of-the-video-generation-models).
-
-<a name="evaluation_method_suite"></a>
-## :surfer: Evaluation Method Suite
-
-To perform evaluation on one dimension, run this:
-```
-python evaluate.py --videos_path $VIDEOS_PATH --dimension $DIMENSION
-```
-- The complete list of dimensions:
-    ```
-    ['subject_consistency', 'background_consistency', 'temporal_flickering', 'motion_smoothness', 'dynamic_degree', 'aesthetic_quality', 'imaging_quality', 'object_class', 'multiple_objects', 'human_action', 'color', 'spatial_relationship', 'scene', 'temporal_style', 'appearance_style', 'overall_consistency']
-    ```
-
-Alternatively, you can evaluate multiple models and multiple dimensions using this script:
-```
-bash evaluate.sh
-```
-- The default sampled video paths:
-    ```
-    vbench_videos/{model}/{dimension}/{prompt}-{index}.mp4/gif
-    ```
-
-
-
-#### Before evaluating the temporal flickering dimension, it is necessary to filter out the static videos first.
-To filter static videos in the temporal flickering dimension, run this:
-```
-# This only filter out static videos whose prompt matches the prompt in the temporal_flickering.
-python static_filter.py --videos_path $VIDEOS_PATH
-```
-You can adjust the filtering scope by:
-```
-# 1. Change the filtering scope to consider all files inside videos_path for filtering.
-python static_filter.py --videos_path $VIDEOS_PATH --filter_scope all
-
-# 2. Specify the path to a JSON file ($filename) to consider only videos whose prompts match those listed in $filename.
-python static_filter.py --videos_path $VIDEOS_PATH --filter_scope $filename
-```
+please contact us via email to update your results.
 
 <a name="citation_and_acknowledgement"></a>
+
 ## :black_nib: Citation
 
    If you find our repo useful for your research, please consider citing our paper:
 
    ```bibtex
-    @InProceedings{huang2023vbench,
-        title={{VBench}: Comprehensive Benchmark Suite for Video Generative Models},
-        author={Huang, Ziqi and He, Yinan and Yu, Jiashuo and Zhang, Fan and Si, Chenyang and Jiang, Yuming and Zhang, Yuanhan and Wu, Tianxing and Jin, Qingyang and Chanpaisit, Nattapol and Wang, Yaohui and Chen, Xinyuan and Wang, Limin and Lin, Dahua and Qiao, Yu and Liu, Ziwei},
-        booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-        year={2024}
-    }
-
-    @article{huang2024vbench++,
-        title={VBench++: Comprehensive and Versatile Benchmark Suite for Video Generative Models},
-        author={Huang, Ziqi and Zhang, Fan and Xu, Xiaojie and He, Yinan and Yu, Jiashuo and Dong, Ziyue and Ma, Qianli and Chanpaisit, Nattapol and Si, Chenyang and Jiang, Yuming and Wang, Yaohui and Chen, Xinyuan and Chen, Ying-Cong and Wang, Limin and Lin, Dahua and Qiao, Yu and Liu, Ziwei},
-        journal={arXiv preprint arXiv:2411.13503},
-        year={2024}
+    @InProceedings{
     }
    ```
-
-
-## :hearts: Acknowledgement
-
-#### :muscle: VBench Contributors
-Order is based on the time joining the project: 
-> [Ziqi Huang](https://ziqihuangg.github.io/), [Yinan He](https://github.com/yinanhe), [Jiashuo Yu](https://scholar.google.com/citations?user=iH0Aq0YAAAAJ&hl=zh-CN), [Fan Zhang](https://github.com/zhangfan-p), [Nattapol Chanpaisit](https://nattapolchan.github.io/me), [Xiaojie Xu](https://github.com/xjxu21), [Qianli Ma](https://github.com/MqLeet), [Ziyue Dong](https://github.com/DZY-irene).
-
-#### :hugs: Open-Sourced Repositories
-This project wouldn't be possible without the following open-sourced repositories:
-[AMT](https://github.com/MCG-NKU/AMT/), [UMT](https://github.com/OpenGVLab/unmasked_teacher), [RAM](https://github.com/xinyu1205/recognize-anything), [CLIP](https://github.com/openai/CLIP), [RAFT](https://github.com/princeton-vl/RAFT), [GRiT](https://github.com/JialianW/GRiT), [IQA-PyTorch](https://github.com/chaofengc/IQA-PyTorch/), [ViCLIP](https://github.com/OpenGVLab/InternVideo/tree/main/Data/InternVid), and [LAION Aesthetic Predictor](https://github.com/LAION-AI/aesthetic-predictor).
-
-## Related Links
-
-We are putting together [Awesome-Evaluation-of-Visual-Generation](https://github.com/ziqihuangg/Awesome-Evaluation-of-Visual-Generation), which collects works for evaluating visual generation.
