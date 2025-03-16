@@ -27,6 +27,9 @@ This repository contains the implementation of the following paper and its relat
 - [Usage](#usage)
 - [Citation and Acknowledgement](#citation_and_acknowledgement)
 
+<a name="update"></a>
+## :mega: Updates
+- [03/2025] **Code and dataset relaease:** our V-STAR benchmark is released.
 <a name="overview"></a>
 ## :mega: Overview
 ![Abstract](motivation.png)
@@ -80,7 +83,7 @@ Noted: You need at least 2 NVIDIA A100 80G GPUs to run Qwen-2.5-72B for evaluati
 
 ### Submit to Leaderboard
 
-please contact us via email to update your results.
+please contact us via email (jian.hu@qmul.ac.uk or zixu.cheng@qmul.ac.uk) to update your results.
 
 <a name="citation_and_acknowledgement"></a>
 
