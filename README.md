@@ -41,10 +41,8 @@ This repository contains the implementation of the following paper and its relat
 
 We visualize the evaluation results of the 6 most recent top-performing Video-LLMs across 9 V-STaR domains.
 <p align="center">
-  <img src="radar.png" width="65%"/>
+  <img src="radar.png" width="80%"/>
 </p>
-
-Additionally, we present radar charts separately for the evaluation results of open-source and closed-source models. The results are normalized per dimension for clearer comparisons.
 
 #### :trophy: Leaderboard
 
@@ -52,7 +50,7 @@ See numeric values at our [Leaderboard](https://huggingface.co/spaces/V-STaR-Ben
 
 **How to join VBench Leaderboard?**
 
-please contact us via email to update your results.
+please contact us via email (jian.hu@qmul.ac.uk or zixu.cheng@qmul.ac.uk) to update your results.
 
 #### Evaluation Criterion
 
