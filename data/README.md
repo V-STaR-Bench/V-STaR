@@ -8,7 +8,7 @@ Annotation: You can download the annotation from here or from [HuggingFace](http
 
 Each annotation is organized by
 
-```json
+```
 {
   "vid": ...,										# Video ID
   "domain": ..., 
