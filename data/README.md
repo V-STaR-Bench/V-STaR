@@ -10,22 +10,22 @@ Each annotation is organized by
 
 ```
 {
-  "vid": ...,										# Video ID
+  "vid": ...,								# Video ID
   "domain": ..., 
   "fps": ..., 
   "width": ..., 
   "height": ..., 
-  "frame_count": ..., 					# total frame number of the video
+  "frame_count": ..., 							# total frame number of the video
   "question": ..., 							# VQA question
   "chain": "<think>...<think>", # spatio-temporal thinking chain
-  "object": ..., 								# object of the boxes
+  "object": ..., 							# object of the boxes
   "answer": ..., 
-  "temporal_question": ..., 		# temporal grounding question
+  "temporal_question": ..., 						# temporal grounding question
   "timestamps": [..., ...], 
-	"spatial_question": ..., 			# Chain 1 Spatial grounding question
-	"spatial_question_2": ..., 		# Chain 2 Spatial grounding question	
-	"bboxes": [
-    {"{timestamp}_{frame_index}": {"xmin": ..., "ymin": ..., "xmax": ..., "ymax": ...},...
+  "spatial_question": ..., 						# Chain 1 Spatial grounding question
+  "spatial_question_2": ..., 						# Chain 2 Spatial grounding question	
+  "bboxes": [
+	{"{timestamp}_{frame_index}":{"xmin": ...,"ymin": ..., "xmax": ..., "ymax": ...}},...
   ]
 }
 ```
