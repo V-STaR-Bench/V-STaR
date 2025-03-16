@@ -37,16 +37,11 @@ This repository contains the implementation of the following paper and its relat
 <a name="evaluation_results"></a>
 ## :mortar_board: Evaluation Results
 
-***See our leaderboard for the most updated ranking and numerical results (with models like GPT-4o, Gemini-2-flash and Qwen2.5-VL)***. [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Leaderboard-blue)](https://huggingface.co/spaces/Vchitect/VBench_Leaderboard)
+***See our leaderboard for the most updated ranking and numerical results (with models like GPT-4o, Gemini-2-flash and Qwen2.5-VL)***. [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Leaderboard-blue)](https://v-star-bench-v-star-leaderboard.hf.space/)
 
-<p align="center">
-  <img src="./asset/all-dim.jpg" width="65%"/>
-</p>
 We visualize the evaluation results of the 6 most recent top-performing Video-LLMs across 9 V-STaR domains.
-
 <p align="center">
-  <img src="./asset/radar-open-new.jpg" width="48%" style="margin-right: 4%;" />
-  <img src="./asset/radar-close-new.jpg" width="48%" />
+  <img src="radar.png" width="65%"/>
 </p>
 
 Additionally, we present radar charts separately for the evaluation results of open-source and closed-source models. The results are normalized per dimension for clearer comparisons.
