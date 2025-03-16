@@ -22,8 +22,8 @@ Each annotation is organized by
   "answer": ..., 
   "temporal_question": ..., 						# temporal grounding question
   "timestamps": [..., ...], 
-  "spatial_question": ..., 						# Chain 1 Spatial grounding question
-  "spatial_question_2": ..., 						# Chain 2 Spatial grounding question	
+  "spatial_question": ..., 						# Chain 1 spatial grounding question
+  "spatial_question_2": ..., 						# Chain 2 spatial grounding question	
   "bboxes": [
 	{"{timestamp}_{frame_index}":{"xmin": ...,"ymin": ..., "xmax": ..., "ymax": ...}},...
   ]
