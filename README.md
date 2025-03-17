@@ -1,7 +1,7 @@
 ![v_star_logo](https://raw.githubusercontent.com/V-STaR-Bench/V-STaR/main/assets/v_star_logo.png)
 
 <!-- [![arXiv](https://img.shields.io/badge/arXiv-2311.99999-b31b1b.svg)](https://arxiv.org/abs/2311.99999) -->
-[![V-STaR Paper](https://img.shields.io/badge/ArXiV%202025-b31b1b?logo=arxiv&logoColor=red)](https://arxiv.org/abs/2311.17982)
+[![V-STaR Paper](https://img.shields.io/badge/ArXiV%202025-b31b1b?logo=arxiv&logoColor=red)](https://arxiv.org/pdf/2503.11495)
 [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Leaderboard-blue)](https://huggingface.co/spaces/V-STaR-Bench/V-STaR-LeaderBoard)
 [![Dataset Download](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset%20Download-blue)](https://huggingface.co/datasets/V-STaR-Bench/V-STaR)
 [![Project Page](https://img.shields.io/badge/VSTaR-Website-green?logo=googlechrome&logoColor=green)](https://v-star-bench.github.io/)
