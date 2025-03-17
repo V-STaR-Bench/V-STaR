@@ -51,6 +51,7 @@ We proposed to use Arithmetic Mean (AM) and modified logarithmic Geometric Mean 
 <p align="center">
   <img src="assets/radar.png" width="80%"/>
 </p>
+
 ## :trophy: Leaderboard
 
 See numeric values at our [Leaderboard](https://huggingface.co/spaces/V-STaR-Bench/V-STaR-LeaderBoard) :1st_place_medal::2nd_place_medal::3rd_place_medal:
