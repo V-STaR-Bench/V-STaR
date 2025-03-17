@@ -51,11 +51,11 @@ We proposed to use Arithmetic Mean (AM) and modified logarithmic Geometric Mean 
 <p align="center">
   <img src="assets/radar.png" width="80%"/>
 </p>
-#### :trophy: Leaderboard
+## :trophy: Leaderboard
 
 See numeric values at our [Leaderboard](https://huggingface.co/spaces/V-STaR-Bench/V-STaR-LeaderBoard) :1st_place_medal::2nd_place_medal::3rd_place_medal:
 
-**How to join VBench Leaderboard?**
+#### **How to join VBench Leaderboard?**
 
 please contact us via email (jian.hu@qmul.ac.uk or zixu.cheng@qmul.ac.uk) to update your results.
 
