@@ -29,8 +29,8 @@ This repository contains the implementation of the following paper and its relat
 
 <a name="update"></a>
 ## :mega: Updates
-- [03/2025] **Dataset relaease:** our evaluation dataset is released.
-- [03/2025] **Code and leaderboard relaease:** our V-STAR benchmark is released.
+- [03/2025] **Dataset released:** our evaluation dataset is released.
+- [03/2025] **Code and leaderboard released:** our V-STAR benchmark is released.
 <a name="overview"></a>
 ## :mega: Overview
 ![Abstract](assets/vis.png)
