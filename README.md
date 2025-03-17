@@ -94,6 +94,13 @@ please contact us via email (jian.hu@qmul.ac.uk or zixu.cheng@qmul.ac.uk) to upd
    If you find our repo useful for your research, please consider citing our paper:
 
    ```bibtex
-    @InProceedings{
-    }
+   @misc{cheng2025vstarbenchmarkingvideollmsvideo,
+         title={V-STaR: Benchmarking Video-LLMs on Video Spatio-Temporal Reasoning}, 
+         author={Zixu Cheng and Jian Hu and Ziquan Liu and Chenyang Si and Wei Li and Shaogang Gong},
+         year={2025},
+         eprint={2503.11495},
+         archivePrefix={arXiv},
+         primaryClass={cs.CV},
+         url={https://arxiv.org/abs/2503.11495}, 
+   }
    ```
