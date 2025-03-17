@@ -66,7 +66,14 @@ For the *"where"* question, we use the Average Precision score (AP@vIoU=m) and m
 
 <a name="usage"></a>
 ## Usage
-Use V-STaR to evaluate Video-LLMs:
+##### Download V-STaR dataset on HuggingFace
+
+```
+git lfs install
+git clone https://huggingface.co/datasets/V-STaR-Bench/V-STaR
+```
+
+##### Use V-STaR to evaluate Video-LLMs
 
 We provide our inference_demo.py script to test Qwen2.5-VL-7B with:
 
