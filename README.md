@@ -45,11 +45,12 @@ This repository contains the implementation of the following paper and its relat
 ***See our leaderboard for the most updated ranking and numerical results (with models like GPT-4o, Gemini-2-flash and Qwen2.5-VL)***. [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Leaderboard-blue)](https://v-star-bench-v-star-leaderboard.hf.space/)
 
 We visualize the evaluation results of the 6 most recent top-performing Video-LLMs across 9 V-STaR domains.
+
+We proposed to use Arithmetic Mean (AM) and modified logarithmic Geometric Mean (LGM) to measure the spatio-temporal reasoning capability of Video-LLMs. We calculate AM and LGM from the "Accuracy" of VQA, "m_tIoU" of Temporal grounding and "m_vIoU" of Spatial Grounding, and we get the mean AM (mAM) and mean LGM (mLGM) from the results of our proposed 2 RSTR question chains.
+
 <p align="center">
   <img src="assets/radar.png" width="80%"/>
 </p>
-
-
 #### :trophy: Leaderboard
 
 See numeric values at our [Leaderboard](https://huggingface.co/spaces/V-STaR-Bench/V-STaR-LeaderBoard) :1st_place_medal::2nd_place_medal::3rd_place_medal:
@@ -91,7 +92,7 @@ python eval.py
 ```
 Noted: You need at least 2 NVIDIA A100 80G GPUs to run Qwen-2.5-72B for evaluation.
 
-### Submit to Leaderboard
+## Submit to Leaderboard
 
 please contact us via email (jian.hu@qmul.ac.uk or zixu.cheng@qmul.ac.uk) to update your results.
 
