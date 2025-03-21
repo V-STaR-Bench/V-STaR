@@ -5,7 +5,7 @@
 [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Leaderboard-blue)](https://huggingface.co/spaces/V-STaR-Bench/V-STaR-LeaderBoard)
 [![Dataset Download](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset%20Download-blue)](https://huggingface.co/datasets/V-STaR-Bench/V-STaR)
 [![Project Page](https://img.shields.io/badge/VSTaR-Website-green?logo=googlechrome&logoColor=green)](https://v-star-bench.github.io/)
-[![Project Page](https://img.shields.io/badge/Collection-MLLM%20Reasoning-blue?logo=github&logoColor=)](https://v-star-bench.github.io/)
+[![Project Page](https://img.shields.io/badge/Collection-MLLM%20Reasoning-blue?logo=github&logoColor=)](https://github.com/lwpyh/Awesome-MLLM-Reasoning-Collection)
 [![Visitor](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FV-STaR-Bench%2FV-STaR&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
 
