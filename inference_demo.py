@@ -150,7 +150,7 @@ def extract_bounding_boxes(answer_spatial, data, input_height, input_width):
     """
     Extract bounding boxes from the input answer_spatial and denormalize the coordinates using the width and height from the data.
     """
-    w, h = data['width'], data['height']  # 提取宽度和高度
+    w, h = data['width'], data['height'] 
 
     def denormalize_bbox(bbox):
         """
