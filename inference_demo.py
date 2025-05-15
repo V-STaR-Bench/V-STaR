@@ -1,4 +1,4 @@
-import cv2 
+import cv2  # We're using OpenCV to read video, to install !pip install opencv-python
 import base64
 import time
 import os
@@ -89,7 +89,7 @@ def get_answer_temporal_2(data, video_path, bboxes):
 
 def get_answer_spatial(data, video_path):
     video_length = round(data['frame_count']/data['fps'], 2)
-    st, et = math.ceil(data['temporal_gt_sec'][0]), math.floor(data['temporal_gt_sec'][1])
+    st, et = math.ceil(data['timestamps'][0]), math.floor(data['timestamps'][1])
     time_range = list(range(st, et + 1))
     w, h = data['width'], data['height']
     spatial_question = data['spatial_question']
@@ -102,7 +102,7 @@ def get_answer_spatial(data, video_path):
 
 def get_answer_spatial_2(data, video_path, bboxes):
     video_length = round(data['frame_count']/data['fps'], 2)
-    st, et = math.ceil(data['temporal_gt_sec'][0]), math.floor(data['temporal_gt_sec'][1])
+    st, et = math.ceil(data['timestamps'][0]), math.floor(data['timestamps'][1])
     time_range = list(range(st, et + 1))
     w, h = data['width'], data['height']
     spatial_question = data['spatial_question_2']
@@ -117,8 +117,9 @@ def get_answer_spatial_2(data, video_path, bboxes):
 
 def extract_timestamps(result):
     """extract timestamps from the answer"""
-    match = re.findall(r"\b\d+(?:\.\d+)?\b", result)  
+    match = re.findall(r"\b\d+(?:\.\d+)?\b", result)
     return [float(match[0]), float(match[1])] if len(match) == 2 else []
+
 
 def fix_incomplete_json(json_str):
     """
@@ -129,19 +130,19 @@ def fix_incomplete_json(json_str):
     close_square = json_str.count(']')
     open_curly = json_str.count('{')
     close_curly = json_str.count('}')
-    
-    # Complete the square brackets 
+
+    # Complete the square brackets
     if open_square > close_square:
         json_str += ']' * (open_square - close_square)
     elif close_square > open_square:
         json_str = '[' * (close_square - open_square) + json_str
-    
+
     # Complete the curly brackets
     if open_curly > close_curly:
         json_str += '}' * (open_curly - close_curly)
     elif close_curly > open_curly:
         json_str = '{' * (close_curly - open_curly) + json_str
-    
+
     return json_str
 
 
@@ -150,7 +151,7 @@ def extract_bounding_boxes(answer_spatial, data, input_height, input_width):
     Extract bounding boxes from the input answer_spatial and denormalize the coordinates using the width and height from the data.
     """
     w, h = data['width'], data['height']  # 提取宽度和高度
-    
+
     def denormalize_bbox(bbox):
         """
         denormalize the coordinates of bbox
@@ -160,14 +161,15 @@ def extract_bounding_boxes(answer_spatial, data, input_height, input_width):
                 bbox = bbox[0]
             if len(bbox) == 2:
                 bbox = bbox[1]
-            x_min = int(bbox[0]/input_width * w)
-            y_min = int(bbox[1]/input_height * h)
-            x_max = int(bbox[2]/input_width * w)
-            y_max = int(bbox[3]/input_height * h)
+            x_min = int(bbox[0] / input_width * w)
+            y_min = int(bbox[1] / input_height * h)
+            x_max = int(bbox[2] / input_width * w)
+            y_max = int(bbox[3] / input_height * h)
             return [x_min, y_min, x_max, y_max]
         except Exception as e:
             print(f"Processing {bbox} occurs Error {e}")
             return bbox
+
     # match markdown json
     markdown_pattern = r'```json\s*\n(\[.*?\]|\{.*?\})\s*\n```'
     match = re.search(markdown_pattern, answer_spatial, re.DOTALL)
@@ -188,8 +190,8 @@ def extract_bounding_boxes(answer_spatial, data, input_height, input_width):
                 combined_dict = {}
                 for item in bounding_boxes:
                     combined_dict.update(item)
-                bounding_boxes = combined_dict 
-            # Determine if the extracted JSON is a dictionary or a list.
+                bounding_boxes = combined_dict
+                # Determine if the extracted JSON is a dictionary or a list.
             if isinstance(bounding_boxes, list):
                 # bounding boxes in list
                 return {str(box[0]): box[1] for box in bounding_boxes}
@@ -212,13 +214,13 @@ def extract_bounding_boxes(answer_spatial, data, input_height, input_width):
         print("No match found for the bounding box JSON.")
         return None
 
-def test_qwen2vl(video_folder, anno_file, result_file):
+def test_qwen2_5vl(video_folder, anno_file, result_file):
     anno = read_anno(anno_file)
 
     for idx, data in enumerate(tqdm(anno, desc="Processing videos", unit="video")):
-        try: 
+        try:
             vid = data['vid']
-            timestamps = data['temporal_gt_sec']
+            timestamps = data['timestamps']
             video_length = round(data['frame_count']/data['fps'], 1)
             boxes = [[box_data["xmin"], box_data["ymin"], box_data["xmax"], box_data["ymax"]] \
                         for box in data["bboxes"] for box_data in box.values()]
@@ -227,6 +229,7 @@ def test_qwen2vl(video_folder, anno_file, result_file):
             # chain one
             answer_temporal = get_answer_temporal(data, video_path)
             answer_temporal_post = extract_timestamps(answer_temporal)
+
             answer_spatial, input_height, input_width = get_answer_spatial(data, video_path)
             answer_spatial_post = extract_bounding_boxes(answer_spatial, data, input_height, input_width)
             
@@ -261,4 +264,4 @@ if __name__ == "__main__":
     video_folder = "/Path/to/video/folder"
     anno_file = "/path/to/anno/file.json"
     result_file = "/path/to/result/file.json"
-    test_qwen2vl(video_folder, anno_file, result_file)
+    test_qwen2_5vl(video_folder, anno_file, result_file)

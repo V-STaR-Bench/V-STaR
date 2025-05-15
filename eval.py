@@ -29,6 +29,7 @@ Lastly, a rating of 3 indicates complete similarity, which means the candidate a
 Your response should be a single integer from 0, 1, 2, or 3.
 """
 
+# tmpl = 'Groundtruth answer: {}\nCandidate answer: {}\nYour response: '
 tmpl = 'Question: {}\nGroundtruth answer: {}\nCandidate answer: {}\nYour response: '
 
 def qwen2_5_evaluation(question, gt, candidate):
@@ -54,6 +55,8 @@ def qwen2_5_evaluation(question, gt, candidate):
 
     response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
     score = response
+    # print(score)
+    # breakpoint()
     try:
         score = int(score)
     except (ValueError, TypeError):
@@ -62,21 +65,20 @@ def qwen2_5_evaluation(question, gt, candidate):
 
 
 def calculate_temporal_iou(gt_range, pred_range):
-    """compute Temporal IoU"""
-    if not pred_range:  # If pred_range is None or empty
-        return 0.0  # Return default 0.0
+    """ calculate Temporal IoU"""
+    if not pred_range:
+        return 0.0  
     
-    # If pred_range is a string, then try to convert to a list
+
     if isinstance(pred_range, str):
         try:
             pred_range = ast.literal_eval(pred_range)
         except (ValueError, SyntaxError):
-            return 0.0  #  The conversion fails and returns the default value of 0.0
-    
-    # Ensure that pred_range is a list or tuple of two values
+            return 0.0
+
     if not isinstance(pred_range, (list, tuple)) or len(pred_range) != 2 or \
     not all(isinstance(x, (int, float)) for x in pred_range):
-        return 0.0  # is not a valid values, returns the default value of 0.0
+        return 0.0
 
     gt_start, gt_end = gt_range
     pred_start, pred_end = pred_range
@@ -86,22 +88,22 @@ def calculate_temporal_iou(gt_range, pred_range):
 
 
 def compute_iou(gt_bbox, pred_bbox):
-        """Calculate the IoU for two boxes"""
+        """calculate 2 bbox IoU"""
         if not isinstance(pred_bbox, (list, tuple)) or len(pred_bbox) != 4:
             return 0.0
         
-        # get GT bbox coordinates
+        # GT bbox
         gt_xmin, gt_ymin, gt_xmax, gt_ymax = gt_bbox['xmin'], gt_bbox['ymin'], gt_bbox['xmax'], gt_bbox['ymax']
         pred_xmin, pred_ymin, pred_xmax, pred_ymax = pred_bbox
 
-        # calculate intersection
+        # Intersection
         x1 = max(gt_xmin, pred_xmin)
         y1 = max(gt_ymin, pred_ymin)
         x2 = min(gt_xmax, pred_xmax)
         y2 = min(gt_ymax, pred_ymax)
         intersection = max(0, x2 - x1) * max(0, y2 - y1)
 
-        # calculate union
+        # Union
         gt_area = (gt_xmax - gt_xmin) * (gt_ymax - gt_ymin)
         pred_area = (pred_xmax - pred_xmin) * (pred_ymax - pred_ymin)
         union = gt_area + pred_area - intersection
@@ -109,33 +111,36 @@ def compute_iou(gt_bbox, pred_bbox):
         return intersection / union if union > 0 else 0.0
 
 def calculate_bbox_iou(gt_bbox, pred_bboxes):
-    """Calculate single BBox IoU, support multiple prediction boxes to take max IoU"""
+    """Calculate single BBox IoU, support multiple prediction frames to get maximum IoU"""
     try:
         if not pred_bboxes:
             return 0.0
-        
-        # Handling of individual boxes
+
         if isinstance(pred_bboxes[0], (int, float)) and len(pred_bboxes) == 4:
             pred_bboxes = [pred_bboxes]
-        
-        # Calculate the IoU for all prediction frames and return the maximum value
+
         return max([compute_iou(gt_bbox, pred_bbox) for pred_bbox in pred_bboxes])
     except:
         return 0.0
 
 def calculate_spatial_metrics(gt_bboxes, pred_bboxes):
-    """Compute vIoU and AP"""
-    if not pred_bboxes:  # Checks if pred_bboxes are None or empty.
-        return [0.0] * 5, 0.0  # Return default: 0 for all APs, 0 for m_vIoU
+    """calculate Spatial IoU and mAP"""
+    if not pred_bboxes:
+        return [0.0] * 5, 0.0
 
     iou_thresholds = [0.1, 0.3, 0.5, 0.7, 0.9]
     ious = []
     aps = []
     for gt_bbox_entry in gt_bboxes:
-        for frame_id, gt_bbox in gt_bbox_entry.items():
-            frame_id = frame_id.split("_")[0]
-            if frame_id in pred_bboxes:
+        frame_id = str(box["timestamp"])
+        if frame_id in pred_bboxes:
                 pred_bbox = pred_bboxes[frame_id]
+                gt_bbox = {
+                    "xmin": box["xmin"],
+                    "ymin": box["ymin"],
+                    "xmax": box["xmax"],
+                    "ymax": box["ymax"]
+                }
                 iou = calculate_bbox_iou(gt_bbox, pred_bbox)
                 ious.append(iou)
             else:
@@ -150,6 +155,27 @@ def calculate_spatial_metrics(gt_bboxes, pred_bboxes):
             aps.append(0.0)
     return aps, mIoU
 
+def calculate_spatial_random(gt_bboxes, w, h):
+    """calculate Spatial IoU and mAP"""
+    pred_bbox = [0, 0, w, h]
+    iou_thresholds = [0.1, 0.3, 0.5, 0.7, 0.9]
+    ious = []
+    aps = []
+    for gt_bbox_entry in gt_bboxes:
+        for frame_id, gt_bbox in gt_bbox_entry.items():
+            iou = calculate_bbox_iou(gt_bbox, pred_bbox)
+            ious.append(iou)
+    mIoU = np.mean(ious) if ious else 0.0
+
+    for threshold in iou_thresholds:
+        scores = [1 if iou >= threshold else 0 for iou in ious]
+        if len(ious) > 0:
+            aps.append(np.mean(scores))
+        else:
+            aps.append(0.0)
+    return aps, mIoU
+
+# evaluate the json file
 def evaluate_json(file_path):
     with open(file_path, 'r') as f:
         data = json.load(f)
@@ -158,7 +184,7 @@ def evaluate_json(file_path):
     domains = {}
     durations = {}
     overall_stats = {"all_rating":[], "valid_rating": [], "correct_num":0, "temporal_ious": [], "temporal_ious_2": [], "spatial_aps": [[] for _ in range(5)],
-                    "spatial_aps_2": [[] for _ in range(5)], "spatial_mious": [], "spatial_mious_2": [],
+                    "spatial_aps_2": [[] for _ in range(5)], "spatial_mious": [], "spatial_mious_2": [], "random_tious": [], "random_aps": [[] for _ in range(5)], "random_vious":[],
                     "vqa_temporal_idx":[], "vqa_spatial_idx":[], "temporal_spatial_idx":[],"vqa_temp_spatial_idx":[],
                     "vqa_temporal_idx_2":[], "vqa_spatial_idx_2":[], "temporal_spatial_idx_2":[],"vqa_temp_spatial_idx_2":[]}
 
@@ -169,27 +195,24 @@ def evaluate_json(file_path):
         domain = item.get("domain", "unknown")
         if domain not in domains:
             domains[domain] = {"all_rating":[], "valid_rating": [], "correct_num":0, "temporal_ious": [], "temporal_ious_2": [], "spatial_aps": [[] for _ in range(5)],
-                    "spatial_aps_2": [[] for _ in range(5)], "spatial_mious": [], "spatial_mious_2": [],
+                    "spatial_aps_2": [[] for _ in range(5)], "spatial_mious": [], "spatial_mious_2": [], "random_tious": [], "random_aps": [[] for _ in range(5)], "random_vious":[],
                     "vqa_temporal_idx":[], "vqa_spatial_idx":[], "temporal_spatial_idx":[],"vqa_temp_spatial_idx":[],
                     "vqa_temporal_idx_2":[], "vqa_spatial_idx_2":[], "temporal_spatial_idx_2":[],"vqa_temp_spatial_idx_2":[]}
         
-        if video_length <= 60:
+        if video_length < 60:
             duration = "Short"
-        elif 60 < video_length <= 180:
+        elif 60 <= video_length < 180:
             duration = "Medium"
         else:
             duration = "Long"
         if duration not in durations:
             durations[duration] = {"all_rating":[], "valid_rating": [], "correct_num":0, "temporal_ious": [], "temporal_ious_2": [], "spatial_aps": [[] for _ in range(5)],
-                    "spatial_aps_2": [[] for _ in range(5)], "spatial_mious": [], "spatial_mious_2": [],
+                    "spatial_aps_2": [[] for _ in range(5)], "spatial_mious": [], "spatial_mious_2": [], "random_tious": [], "random_aps": [[] for _ in range(5)], "random_vious":[],
                     "vqa_temporal_idx":[], "vqa_spatial_idx":[], "temporal_spatial_idx":[],"vqa_temp_spatial_idx":[],
                     "vqa_temporal_idx_2":[], "vqa_spatial_idx_2":[], "temporal_spatial_idx_2":[],"vqa_temp_spatial_idx_2":[]}
 
         if 'answer_vqa' in item and item['answer_vqa']:
-            score = qwen2_5_evaluation(item['question'], item['refine_answer'], item['answer_vqa'])
-            # score1 = qwen2_5_evaluation(item['question'], item['refine_answer'], item['answer_vqa'])
-            # score2 = qwen2_5_evaluation(item['question'], item['object'], item['answer_vqa'])
-            # score = max(score1,score2)
+            score = qwen2_5_evaluation(item['question'], item['answer'], item['answer_vqa'])
         else:
             continue
         overall_stats["all_rating"].append(score if score != -1 else 0)
@@ -204,9 +227,9 @@ def evaluate_json(file_path):
             domains[domain]["correct_num"] += 1
             durations[duration]["correct_num"] += 1
         data[idx]["VQA_score"] = score
-        # compute answer_temporal
+        # answer_temporal
         if 'answer_temporal' in item and item['answer_temporal']:
-            temporal_iou = calculate_temporal_iou(item['temporal_gt_sec'], item['answer_temporal'])
+            temporal_iou = calculate_temporal_iou(item['timestamps'], item['answer_temporal'])
         else:
             temporal_iou = 0.0
 
@@ -215,9 +238,9 @@ def evaluate_json(file_path):
         durations[duration]["temporal_ious"].append(temporal_iou)
         data[idx]["temporal_IoU"] = temporal_iou
 
-        # compute answer_temporal_2
+        # answer_temporal_2
         if 'answer_temporal_2' in item and item['answer_temporal_2']:
-            temporal_iou_2 = calculate_temporal_iou(item['temporal_gt_sec'], item['answer_temporal_2'])
+            temporal_iou_2 = calculate_temporal_iou(item['timestamps'], item['answer_temporal_2'])
         else:
             temporal_iou_2 = 0.0
         
@@ -226,7 +249,12 @@ def evaluate_json(file_path):
         durations[duration]["temporal_ious_2"].append(temporal_iou_2)
         data[idx]["temporal_IoU_2"] = temporal_iou_2
 
-        # compute answer_spatial
+        random_iou = calculate_temporal_iou(item['timestamps'],[0, video_length])
+        overall_stats["random_tious"].append(random_iou)
+        domains[domain]["random_tious"].append(random_iou)
+        durations[duration]["random_tious"].append(random_iou)
+
+        # answer_spatial
         if 'answer_spatial' in item and item['answer_spatial']:
             aps, mIoU = calculate_spatial_metrics(item['bboxes'], item['answer_spatial'])
         else:
@@ -241,7 +269,7 @@ def evaluate_json(file_path):
         data[idx]["AP1@0.1:0.9"] = aps
         data[idx]["spatial_mIoU"] = mIoU
 
-        # compute answer_spatial_2
+        # answer_spatial_2
         if 'answer_spatial_2' in item and item['answer_spatial_2']:
             aps_2, mIoU_2 = calculate_spatial_metrics(item['bboxes'], item['answer_spatial_2'])
         else:
@@ -256,6 +284,15 @@ def evaluate_json(file_path):
         data[idx]["AP2@0.1:0.9"] = aps_2
         data[idx]["spatial_mIoU_2"] = mIoU_2
 
+
+        random_aps, random_mIoU = calculate_spatial_random(item['bboxes'], w, h)
+        for i, ap in enumerate(random_aps):
+            domains[domain]["random_aps"][i].append(ap)
+            durations[duration]["random_aps"][i].append(ap)
+            overall_stats["random_aps"][i].append(ap)
+        domains[domain]["random_vious"].append(random_mIoU)
+        durations[duration]["random_vious"].append(random_mIoU)
+        overall_stats["random_vious"].append(random_mIoU)
 
         with open(f'metrics/{model_name}_merged_v2_metrics.json', 'w') as f:
             json.dump(data, f, indent=4)
@@ -293,7 +330,7 @@ def evaluate_json(file_path):
             durations[duration]["vqa_temp_spatial_idx_2"].append(idx)
             overall_stats["vqa_temp_spatial_idx_2"].append(idx)
 
-    with open(f'metrics/{model_name}_merged_metrics.json', 'w') as f:
+    with open(f'metrics/{model_name}_merged_v2_metrics.json', 'w') as f:
             json.dump(data, f, indent=4)
 
     def print_stats(label, stats, total_samples):
@@ -349,7 +386,7 @@ def evaluate_json(file_path):
         print(f"AM1:{AM:.4f}, AM2:{AM2:.4f}, mAM:{mAM:.4f}")
         print(f"LGM1:{LGM:.4f}, LGM2:{LGM2:.4f}, mLGM:{mLGM:.4f}\n")
 
-        print("Joint Performance:")
+        print("Combined resutls:")
         print(f"VQA & Temp:  Chain 1: {vqa_temp:.4f}, Chain 2: {vqa_temp_2:.4f}")
         print(f"VQA & Spat: Chain 1: {vqa_spat:.4f} Chain 2: {vqa_spat_2:.4f}")
         print(f"Temp & Spat:  Chain 1: {temp_spat:.4f} Chain 2: {temp_spat_2:.4f}")
@@ -358,7 +395,7 @@ def evaluate_json(file_path):
         print(f"VQA & Spat list: \n Chain 1:{stats['vqa_spatial_idx']} \n Chain 2: {stats['vqa_spatial_idx_2']}")
         print(f"Temp & Spat list:  \n Chain 1:{stats['temporal_spatial_idx']} \n Chain 2: {stats['temporal_spatial_idx_2']}")
         print(f"VQA & Temp & Spat list: \n Chain 1:{stats['vqa_temp_spatial_idx']} \n Chain 2:{stats['vqa_temp_spatial_idx_2']}\n")
-       
+
     print_stats("Overall Statistics", overall_stats, len(data))
     for duration, stats in durations.items():
         print_stats(f"Video Length: {duration}", stats, len(stats["all_rating"]))
@@ -376,7 +413,10 @@ def evaluate_json(file_path):
 # evaluate_json('results/videollama3/videollama3_answer_merged.json')
 
 print("\nEvaluating Qwen2.5-VL:")
-evaluate_json('results/qwen2_5/qwen2_5vl_answer_merged.json')
+evaluate_json('results/qwen2_5/qwen2-5-32B_answer_update.json')
+
+# print("\nEvaluating InternVL-2.5-38B:")
+# evaluate_json('results/internvl2_5/internvl2-5-38B_answer.json')
 
 # print("\nEvaluating InternVL-2.5:")
 # evaluate_json('results/internvl2_5/internvl2_5_answer_merged.json')
