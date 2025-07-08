@@ -132,7 +132,7 @@ def calculate_spatial_metrics(gt_bboxes, pred_bboxes):
     ious = []
     aps = []
     for gt_bbox_data in gt_bboxes:
-        frame_id = str(gt_bbox["timestamp"])
+        frame_id = str(gt_bbox_data["timestamp"])
         if frame_id in pred_bboxes:
                 pred_bbox = pred_bboxes[frame_id]
                 gt_bbox = {
