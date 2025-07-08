@@ -131,15 +131,15 @@ def calculate_spatial_metrics(gt_bboxes, pred_bboxes):
     iou_thresholds = [0.1, 0.3, 0.5, 0.7, 0.9]
     ious = []
     aps = []
-    for gt_bbox_entry in gt_bboxes:
-        frame_id = str(box["timestamp"])
+    for gt_bbox_data in gt_bboxes:
+        frame_id = str(gt_bbox["timestamp"])
         if frame_id in pred_bboxes:
                 pred_bbox = pred_bboxes[frame_id]
                 gt_bbox = {
-                    "xmin": box["xmin"],
-                    "ymin": box["ymin"],
-                    "xmax": box["xmax"],
-                    "ymax": box["ymax"]
+                    "xmin": gt_bbox_data["xmin"],
+                    "ymin": gt_bbox_data["ymin"],
+                    "xmax": gt_bbox_data["xmax"],
+                    "ymax": gt_bbox_data["ymax"]
                 }
                 iou = calculate_bbox_iou(gt_bbox, pred_bbox)
                 ious.append(iou)
