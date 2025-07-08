@@ -223,7 +223,7 @@ def test_qwen2_5vl(video_folder, anno_file, result_file):
             timestamps = data['timestamps']
             video_length = round(data['frame_count']/data['fps'], 1)
             boxes = [[box_data["xmin"], box_data["ymin"], box_data["xmax"], box_data["ymax"]] \
-                        for box in data["bboxes"] for box_data in box.values()]
+                        for box_data in data["bboxes"]]
             video_path = find_video(video_folder, vid)
             answer_vqa = get_answer_vqa(data, video_path)
             # chain one
