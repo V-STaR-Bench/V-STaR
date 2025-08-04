@@ -143,8 +143,8 @@ def calculate_spatial_metrics(gt_bboxes, pred_bboxes):
                 }
                 iou = calculate_bbox_iou(gt_bbox, pred_bbox)
                 ious.append(iou)
-            else:
-                ious.append(0.0)
+        else:
+            ious.append(0.0)
     mIoU = np.mean(ious) if ious else 0.0
 
     for threshold in iou_thresholds:
