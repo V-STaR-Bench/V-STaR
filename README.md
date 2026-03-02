@@ -30,6 +30,7 @@ This repository contains the implementation of the following paper and its relat
 
 <a name="update"></a>
 ## :mega: Updates
+- [02/2025] Our paper is accepted by CPRR 2026 Finding!
 - [03/2025] **MLLM reasoning collections released:** We’re excited to announce the release of the [Awesome-MLLM-Reasoning-Collection](https://github.com/lwpyh/Awesome-MLLM-Reasoning-Collection) repository! 🚀 This collection curates papers, code, datasets, benchmarks, and resources dedicated to MLLM reasoning, providing a valuable resource for researchers and practitioners in the field. Check it out and contribute! 🔍📚💡
 - [03/2025] **Dataset released:** Our evaluation dataset is released.
 - [03/2025] **Code and leaderboard released:** Our V-STAR benchmark is released.
